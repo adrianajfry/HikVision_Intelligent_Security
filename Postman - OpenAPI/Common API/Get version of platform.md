@@ -20,9 +20,7 @@ Short one-line description of what this folder's endpoints are for.
 
 **Request body:**
 ```json
-{
-
-}
+(No request body required — this endpoint takes no request body)
 ```
 
 **Response:**
