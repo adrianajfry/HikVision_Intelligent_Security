@@ -1,8 +1,8 @@
-# Common API
+# Common API -Get version of platform
 
 Short one-line description of what this folder's endpoints are for.
 
-**Environment used:** `HCP_OpenAPI` (or `HCP_OpenAPI_2` — note which AK/SK pair)
+**Environment used:** `HCP_OpenAPI`
 **Host:** `{{HOSTINFO}}`
 **API version:** `{{API_VER}}`
 
@@ -15,7 +15,8 @@ Short one-line description of what this folder's endpoints are for.
 | Method | `POST` |
 | Path | `/artemis/api/common/{{API_VER}}/version` |
 | AK used | `34489509` |
-| Status | ✅ Passed / ❌ Failed / ⚠️ Blocked (no permission) |
+| Signature used | `8oBImGFnrmbUyylvRYox0RM/cJYUKGc1ku9raHcrAiM=` |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
@@ -24,19 +25,15 @@ Short one-line description of what this folder's endpoints are for.
 }
 ```
 
-**Signature check:**
-- Computed (expected): `paste value here`
-- Actual (from Postman Console): `paste value here`
-- Match? `Yes / No`
-
 **Response:**
 ```json
 {
-  "code": "0",
-  "msg": "Success",
-  "data": {
-
-  }
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "produceName": "HikCentral Professional",
+        "softVersion": "V3.1.1.0"
+    }
 }
 ```
 
@@ -48,7 +45,7 @@ Short one-line description of what this folder's endpoints are for.
 
 ## Endpoint: [Next endpoint name]
 
-*(repeat the block above for each endpoint tested in this folder)*
+*(https://175.140.166.217/artemis/api/common/v1/v)*
 
 ---
 
@@ -58,4 +55,4 @@ Short one-line description of what this folder's endpoints are for.
 - Tested: `X`
 - Passed: `X`
 - Blocked / failed: `X`
-- Last updated: `YYYY-MM-DD`
+- Last updated: `2026-09-06`
