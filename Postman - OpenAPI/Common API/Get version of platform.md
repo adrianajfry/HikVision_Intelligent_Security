@@ -1,14 +1,14 @@
-# Common API -Get version of platform
+# Common API
 
 Short one-line description of what this folder's endpoints are for.
 
 **Environment used:** `HCP_OpenAPI`
-**Host:** `{{HOSTINFO}}`
+**Host:** `{{HOSTINFO}}` (`175.140.166.217`)
 **API version:** `{{API_VER}}`
 
 ---
 
-## Endpoint: [Endpoint Name, e.g. "Get version of platform"]
+## Endpoint: Get version of platform
 
 | Field | Value |
 |---|---|
@@ -36,8 +36,7 @@ Short one-line description of what this folder's endpoints are for.
 ```
 
 **Notes / issues:**
-- e.g. "Returned code 102 (no permission) when using AK #16436892 — flagged to senior on [date]."
-- e.g. "Had to strip trailing slash from HOSTINFO or request timed out."
+- _(none yet)_
 
 ---
 
@@ -49,8 +48,8 @@ Short one-line description of what this folder's endpoints are for.
 
 ## Folder summary
 
-- Total endpoints in this folder: `X`
-- Tested: `X`
-- Passed: `X`
-- Blocked / failed: `X`
+- Total endpoints in this folder: `1`
+- Tested: `1`
+- Passed: `1`
+- Blocked / failed: `0`
 - Last updated: `2026-09-06`
