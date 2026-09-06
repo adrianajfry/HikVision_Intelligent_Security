@@ -15,8 +15,8 @@ _(POST endpoints in this folder — 1 total)_
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}/streamServer/streamServerList` |
 | AK used | `34489509` |
-| Signature used | QnWDuz5iGUyweFKLBJ3FNvd27Or8bNSDfBmiD70Rycg= |
-| Status | ⬜ Not yet tested |
+| Signature used | `QnWDuz5iGUyweFKLBJ3FNvd27Or8bNSDfBmiD70Rycg=` |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
