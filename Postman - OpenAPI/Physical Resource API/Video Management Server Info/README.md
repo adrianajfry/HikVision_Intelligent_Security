@@ -16,7 +16,7 @@ _(POST endpoints in this folder — 1 total)_
 | Path | `/artemis/api/resource/{{API_VER}}/videoManagementServer` |
 | AK used | `34489509` |
 | Signature used | `2+Ywueu+ITI9aJb12yJ2YGiN9Y7T2GyZYqQ0OujKKSI=` |
-| Status | ⬜ Not yet tested |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
@@ -38,15 +38,17 @@ _(POST endpoints in this folder — 1 total)_
 ```
 
 **Notes / issues:**
-- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
+- *Request succeeded fully (`code: 0`, Success) with real server data returned — confirms signature/auth is correct for this endpoint.
+- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results shows `0/1` even though the actual API call is correct and successful. Same collection-wide bug affecting 142/143 requests (see `TESTING_LOG.md`).
+- Optional fix (not applied — flagging as an option for senior to decide): the Tests script could be rewritten to check for this endpoint's real fields (`ip`, `port`, `cpu`, `status`) instead of `produceName`/`softVersion`, which would make it show `1/1`. Left as-is for now since fixing all 142 affected requests is a separate scope of work from documentation/verification.
 
 ---
 
 ## Folder summary
 
 - Total endpoints in this folder: `1`
-- Tested: `0`
-- Passed: `0`
+- Tested: `1`
+- Passed: `1`
 - Blocked / failed: `0`
 - ⚠️ Contains at least one endpoint with the known copy-pasted test-script bug (schema expects `produceName`/`softVersion`).
 - Last updated: `2026-09-06`
