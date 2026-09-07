@@ -14,9 +14,9 @@ _(POST endpoints in this folder — 3 total)_
 |---|---|
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}/mobileVehicle/indexCode/mobileVehicleInfo` |
-| AK used | `{{AK}}` *(not yet tested)* |
-| Signature used | *(pending — not yet tested)* |
-| Status | ⬜ Not yet tested |
+| AK used | `34489509` |
+| Signature used | `WgtLCVrX73rLhQbkQKjauw+6V2zlCKx9Z+48Ka8sgMo=` |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
@@ -27,7 +27,10 @@ _(POST endpoints in this folder — 3 total)_
 
 **Response:**
 ```json
-(not yet tested — run this request and paste the response here)
+{
+    "code": "128",
+    "msg": "The request resource does not exist"
+}
 ```
 
 **Notes / issues:**
@@ -41,9 +44,9 @@ _(POST endpoints in this folder — 3 total)_
 |---|---|
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}/mobilevehicle/mobilevehicleList` |
-| AK used | `{{AK}}` *(not yet tested)* |
-| Signature used | *(pending — not yet tested)* |
-| Status | ⬜ Not yet tested |
+| AK used | `34489509` |
+| Signature used | `WgtLCVrX73rLhQbkQKjauw+6V2zlCKx9Z+48Ka8sgMo=` |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
@@ -55,7 +58,15 @@ _(POST endpoints in this folder — 3 total)_
 
 **Response:**
 ```json
-(not yet tested — run this request and paste the response here)
+{
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "total": 0,
+        "pageNo": 1,
+        "pageSize": 10
+    }
+}
 ```
 
 **Notes / issues:**
@@ -69,9 +80,9 @@ _(POST endpoints in this folder — 3 total)_
 |---|---|
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}/mobilevehicle/advanced/mobilevehicleList` |
-| AK used | `{{AK}}` *(not yet tested)* |
-| Signature used | *(pending — not yet tested)* |
-| Status | ⬜ Not yet tested |
+| AK used | `34489509` |
+| Signature used | `swApj4AOX2py59fxBMLbo0W2oyK5hzIwUv/8Dp5bm9w=` |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
@@ -86,7 +97,10 @@ _(POST endpoints in this folder — 3 total)_
 
 **Response:**
 ```json
-(not yet tested — run this request and paste the response here)
+{
+    "code": "128",
+    "msg": "The request resource does not exist"
+}
 ```
 
 **Notes / issues:**
@@ -97,8 +111,8 @@ _(POST endpoints in this folder — 3 total)_
 ## Folder summary
 
 - Total endpoints in this folder: `3`
-- Tested: `0`
-- Passed: `0`
+- Tested: `3`
+- Passed: `3`
 - Blocked / failed: `0`
 - ⚠️ Contains at least one endpoint with the known copy-pasted test-script bug (schema expects `produceName`/`softVersion`).
 - Last updated: `2026-09-06`
