@@ -487,9 +487,9 @@ _(POST endpoints in this folder — 15 total)_
 |---|---|
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}/person/customFields` |
-| AK used | `{{AK}}` *(not yet tested)* |
-| Signature used | *(pending — not yet tested)* |
-| Status | ⬜ Not yet tested |
+| AK used | `34489509` |
+| Signature used | `yPLLPvP/K6twPdgNJC4LChJRJIP/TRy7Ab6y8WCYF+A=` |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
@@ -501,11 +501,19 @@ _(POST endpoints in this folder — 15 total)_
 
 **Response:**
 ```json
-(not yet tested — run this request and paste the response here)
+{
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "total": 0,
+        "pageNo": 1,
+        "pageSize": 2
+    }
+}
 ```
 
 **Notes / issues:**
-- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
+- **total: 0** means no custom fields are configured on this account at all
 
 ---
 
