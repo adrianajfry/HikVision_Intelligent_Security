@@ -439,24 +439,45 @@ _(POST endpoints in this folder — 15 total)_
 |---|---|
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}/person/personCode/personInfo` |
-| AK used | `{{AK}}` *(not yet tested)* |
-| Signature used | *(pending — not yet tested)* |
-| Status | ⬜ Not yet tested |
+| AK used | `34489509` |
+| Signature used | `9gGxU5vTxNxewvl6vES7ao02r/oAxJxSjw3fHigD7ZE=` |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
 {
-    "personCode": "8ffb3b91-f823-42b6-8fca-137bff553857"
+    "personCode": "person001"
 }
 ```
 
 **Response:**
 ```json
-(not yet tested — run this request and paste the response here)
+{
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "personId": "1",
+        "personCode": "person001",
+        "personName": "Test Tan",
+        "personFamilyName": "Tan",
+        "personGivenName": "Test",
+        "gender": 1,
+        "orgIndexCode": "1",
+        "personPhoto": {
+            "picUri": "",
+            "picBigUri": ""
+        },
+        "phoneNo": "13000110011",
+        "email": "testperson@example.com",
+        "remark": "Test person created for API documentation",
+        "beginTime": "2020-05-26T15:00:00+08:00",
+        "endTime": "2030-05-26T15:00:00+08:00"
+    }
+}
 ```
 
 **Notes / issues:**
-- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
+- no issues for now.
 
 ---
 
