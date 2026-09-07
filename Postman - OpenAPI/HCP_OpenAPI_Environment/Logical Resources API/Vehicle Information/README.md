@@ -224,7 +224,7 @@ _(POST endpoints in this folder — 10 total)_
 | Path | `/artemis/api/resource/{{API_VER}}/vehicle/single/add` |
 | AK used | `34489509` |
 | Signature used | `Raw7tIV+1TTVZDvp5GhOflY/nURPXHceF2/XQ96XQw0=` |
-| Status | Blocked |
+| Status | ⚠️ Blocked |
 
 **Request body:**
 ```json
