@@ -16,7 +16,7 @@ _(POST endpoints in this folder — 1 total)_
 | Path | `/artemis/api/resource/{{API_VER}}/streamServer/streamServerList` |
 | AK used | `34489509` |
 | Signature used | `QnWDuz5iGUyweFKLBJ3FNvd27Or8bNSDfBmiD70Rycg=` |
-| Status | ✅ Passed |
+| Status | ✅ Passed (empty result) |
 
 **Request body:**
 ```json
@@ -40,6 +40,8 @@ _(POST endpoints in this folder — 1 total)_
 ```
 
 **Notes / issues:**
+- Request succeeded fully (`code: 0`, Success) — signature/auth confirmed correct.
+- `"total": 0` — no stream servers registered under this account. Same pattern as mobile devices, video management, etc. — see `TESTING_LOG.md` "Account has no registered resources" finding.
 - **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
 
 ---
