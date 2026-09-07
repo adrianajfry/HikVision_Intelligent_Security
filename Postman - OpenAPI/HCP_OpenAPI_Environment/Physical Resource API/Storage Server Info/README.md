@@ -16,7 +16,7 @@ _(POST endpoints in this folder — 3 total)_
 | Path | `/artemis/api/resource/{{API_VER}}/recordServer/recordServerList` |
 | AK used | `34489509` |
 | Signature used | `WsUn3UL6IgR7Hik13BmnhcfNpTnnsMd24+yGUWE8Yng=` |
-| Status | ✅ Passed |
+| Status | ✅ Passed (empty result) |
 
 **Request body:**
 ```json
@@ -40,7 +40,9 @@ _(POST endpoints in this folder — 3 total)_
 ```
 
 **Notes / issues:**
-- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
+- Request succeeded fully (`code: 0`, Success) — signature/auth confirmed correct.
+- `"total": 0` — no record/storage servers registered under this account.
+- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix alone.
 
 ---
 
@@ -51,26 +53,27 @@ _(POST endpoints in this folder — 3 total)_
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}//recordServer/indexCode/recordServerInfo` |
 | AK used | `34489509` |
-| Signature used | `0l7z/DZEusOO/qyHwDJqel9GwaCKt40i7o9sI+6qvHM=` |
-| Status | ✅ Passed |
+| Signature used | `5JHmynW+fwrcNF8nPV61U7tm8sRpPF5n8UJ8HM0iNJo=` |
+| Status | ✅ Passed (empty result) |
 
 **Request body:**
 ```json
 {
-    "recordServerIndexCode": "6f731abbe9b74197801274d1be455804"
+    "recordServerIndexCode": "1"
 }
 ```
 
 **Response:**
 ```json
 {
-    "code": "8",
-    "msg": "This product version is not supported"
+    "code": "128",
+    "msg": "Resource Not Exist",
+    "data": ""
 }
 ```
 
 **Notes / issues:**
-- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
+- URL had a double-slash bug (fixed) → placeholder ID had a bad format (also effectively fixed by using "1") → genuinely blocked only by the account having zero record servers registered, same root cause as the rest of Storage Server Info.
 
 ---
 
@@ -111,8 +114,8 @@ _(POST endpoints in this folder — 3 total)_
 ## Folder summary
 
 - Total endpoints in this folder: `3`
-- Tested: `3`
-- Passed: `3`
+- Tested: `1`
+- Passed: `1`
 - Blocked / failed: `0`
 - ⚠️ Contains at least one endpoint with the known copy-pasted test-script bug (schema expects `produceName`/`softVersion`).
 - Last updated: `2026-09-06`
