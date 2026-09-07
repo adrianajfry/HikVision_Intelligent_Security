@@ -137,9 +137,9 @@ _(POST endpoints in this folder — 4 total)_
 |---|---|
 | Method | `POST` |
 | Path | `/artemis/api/frs/{{API_VER}}/application/picture` |
-| AK used | `{{AK}}` *(not yet tested)* |
-| Signature used | *(pending — not yet tested)* |
-| Status | ⬜ Not yet tested |
+| AK used | `34489509` |
+| Signature used | `sQbIaJSnIlGocbzkARsqqTAS7blW3r4ZtBnQGQKH09s=` |
+| Status | 🚫 Not Applicable |
 
 **Request body:**
 ```json
@@ -161,8 +161,8 @@ _(POST endpoints in this folder — 4 total)_
 ## Folder summary
 
 - Total endpoints in this folder: `4`
-- Tested: `0`
-- Passed: `0`
+- Tested: `2`
+- Passed: `2`
 - Blocked / failed: `0`
 - ⚠️ Contains at least one endpoint with the known copy-pasted test-script bug (schema expects `produceName`/`softVersion`).
-- Last updated: `2026-09-06`
+- Last updated: `2026-09-07`
