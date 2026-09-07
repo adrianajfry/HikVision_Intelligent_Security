@@ -15,7 +15,7 @@ _(POST endpoints in this folder — 1 total)_
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}/videoManagementServer` |
 | AK used | `34489509` |
-| Signature used | `2+Ywueu+ITI9aJb12yJ2YGiN9Y7T2GyZYqQ0OujKKSI=` |
+| Signature used | `vactaGgZM+osob4Nl73g6YQqh7aB3afh4dIx6iXJbQI=` |
 | Status | ✅ Passed |
 
 **Request body:**
@@ -31,7 +31,7 @@ _(POST endpoints in this folder — 1 total)_
     "data": {
         "ip": "127.0.0.1",
         "port": 443,
-        "cpu": 6,
+        "cpu": 3,
         "status": 0
     }
 }
