@@ -139,7 +139,7 @@ _(POST endpoints in this folder — 4 total)_
 | Path | `/artemis/api/frs/{{API_VER}}/application/picture` |
 | AK used | `34489509` |
 | Signature used | `sQbIaJSnIlGocbzkARsqqTAS7blW3r4ZtBnQGQKH09s=` |
-| Status | 🚫 Not Applicable |
+| Status | 🚫 Block/Not Applicable |
 
 **Request body:**
 ```json
@@ -154,7 +154,7 @@ _(POST endpoints in this folder — 4 total)_
 ```
 
 **Notes / issues:**
-- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
+- This one needs an internal device-streaming URL (Dev://...), not something that can be constructed from what's been created so far. Likely blocked/not applicable to this account's setup — worth noting as such rather than forcing it.
 
 ---
 
