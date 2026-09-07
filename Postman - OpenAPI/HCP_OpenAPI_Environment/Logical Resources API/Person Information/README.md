@@ -42,9 +42,9 @@ _(POST endpoints in this folder — 15 total)_
 |---|---|
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}/person/personId/personInfo` |
-| AK used | `{{AK}}` *(not yet tested)* |
-| Signature used | *(pending — not yet tested)* |
-| Status | ⬜ Not yet tested |
+| AK used | `34489509` |
+| Signature used | `Tm94mdOOIMccHpWqEfEN7JECkdtqmbhlka5z3BEokmk=` |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
@@ -55,11 +55,32 @@ _(POST endpoints in this folder — 15 total)_
 
 **Response:**
 ```json
-(not yet tested — run this request and paste the response here)
+{
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "personId": "1",
+        "personCode": "person001",
+        "personName": "Test Tan",
+        "gender": 1,
+        "orgIndexCode": "1",
+        "personPhoto": {
+            "picUri": "",
+            "picBigUri": ""
+        },
+        "phoneNo": "13000110011",
+        "email": "testperson@example.com",
+        "remark": "Test person created for API documentation",
+        "beginTime": "2020-05-26T15:00:00+08:00",
+        "endTime": "2030-05-26T15:00:00+08:00",
+        "personFamilyName": "Tan",
+        "personGivenName": "Test"
+    }
+}
 ```
 
 **Notes / issues:**
-- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
+- This is a good sanity check that the creation actually stuck, and completes another real end-to-end chain: Add a person → real personId → Get a person information by person ID.
 
 ---
 
