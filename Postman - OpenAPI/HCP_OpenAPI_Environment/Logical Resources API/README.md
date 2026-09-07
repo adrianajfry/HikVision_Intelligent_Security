@@ -1,61 +1,104 @@
-# Logical Resource API
+# Logical Resources API - Information of vehicles linked to mobile devices
 
-Short one-line description of what this folder's endpoints are for.
+_(POST endpoints in this folder — 3 total)_
 
-**Environment used:** `HCP_OpenAPI` (or `HCP_OpenAPI_2` — note which AK/SK pair)
-**Host:** `{{HOSTINFO}}`
+**Environment used:** `HCP_OpenAPI`
+**Host:** `{{HOSTINFO}}` (`175.140.166.217`)
 **API version:** `{{API_VER}}`
 
 ---
 
-## Endpoint: [Endpoint Name, e.g. "Get version of platform"]
+## Endpoint: Get a mobile vehicle information by mobile vehicle ID
 
 | Field | Value |
 |---|---|
 | Method | `POST` |
-| Path | `/artemis/api/common/{{API_VER}}/version` |
-| AK used | `34489509` |
-| Status | ✅ Passed / ❌ Failed / ⚠️ Blocked (no permission) |
+| Path | `/artemis/api/resource/{{API_VER}}/mobileVehicle/indexCode/mobileVehicleInfo` |
+| AK used | `{{AK}}` *(not yet tested)* |
+| Signature used | *(pending — not yet tested)* |
+| Status | ⬜ Not yet tested |
 
 **Request body:**
 ```json
 {
-
+    "mobilevehicleIndexCode": "1"
 }
 ```
-
-**Signature check:**
-- Computed (expected): `paste value here`
-- Actual (from Postman Console): `paste value here`
-- Match? `Yes / No`
 
 **Response:**
 ```json
-{
-  "code": "0",
-  "msg": "Success",
-  "data": {
-
-  }
-}
+(not yet tested — run this request and paste the response here)
 ```
 
 **Notes / issues:**
-- e.g. "Returned code 102 (no permission) when using AK #16436892 — flagged to senior on [date]."
-- e.g. "Had to strip trailing slash from HOSTINFO or request timed out."
+- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
 
 ---
 
-## Endpoint: [Next endpoint name]
+## Endpoint: Get the mobile vehicle list in page
 
-*(repeat the block above for each endpoint tested in this folder)*
+| Field | Value |
+|---|---|
+| Method | `POST` |
+| Path | `/artemis/api/resource/{{API_VER}}/mobilevehicle/mobilevehicleList` |
+| AK used | `{{AK}}` *(not yet tested)* |
+| Signature used | *(pending — not yet tested)* |
+| Status | ⬜ Not yet tested |
+
+**Request body:**
+```json
+{
+    "pageNo": 1,
+    "pageSize": 10
+}
+```
+
+**Response:**
+```json
+(not yet tested — run this request and paste the response here)
+```
+
+**Notes / issues:**
+- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
+
+---
+
+## Endpoint: Search the mobile vehicles list
+
+| Field | Value |
+|---|---|
+| Method | `POST` |
+| Path | `/artemis/api/resource/{{API_VER}}/mobilevehicle/advanced/mobilevehicleList` |
+| AK used | `{{AK}}` *(not yet tested)* |
+| Signature used | *(pending — not yet tested)* |
+| Status | ⬜ Not yet tested |
+
+**Request body:**
+```json
+{
+    "pageNo": 1,
+    "pageSize": 10,
+    "mobilevehicleName": "10.18.68.12",
+    "devIndexCode": "1",
+    "regionIndexCode": "1"
+}
+```
+
+**Response:**
+```json
+(not yet tested — run this request and paste the response here)
+```
+
+**Notes / issues:**
+- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
 
 ---
 
 ## Folder summary
 
-- Total endpoints in this folder: `X`
-- Tested: `X`
-- Passed: `X`
-- Blocked / failed: `X`
-- Last updated: `YYYY-MM-DD`
+- Total endpoints in this folder: `3`
+- Tested: `0`
+- Passed: `0`
+- Blocked / failed: `0`
+- ⚠️ Contains at least one endpoint with the known copy-pasted test-script bug (schema expects `produceName`/`softVersion`).
+- Last updated: `2026-09-06`
