@@ -217,15 +217,16 @@ _(POST endpoints in this folder — 6 total)_
 ```
 
 **Notes / issues:**
-- "Apply all face information to device" returned success even with data: "" (empty) — makes sense, since this group has zero actual face entries linked to it yet (we haven't touched the Face Information folder). Worth noting it succeeded but pushed nothing, since the group is empty.
+- "Apply all face information to device" returned success even with data: "" (empty) — makes sense, since this group has zero actual face entries linked to it yet (haven't touched the Face Information folder). Worth noting it succeeded but pushed nothing, since the group is empty.
+- This account has zero access control devices registered. So even though the face group now genuinely has content, there's nothing physically connected to push it to. The API dutifully reports success (the operation itself is valid and accepted), but there's no receiving device on the other end, so the result stays empty regardless of what's in the group.
 
 ---
 
 ## Folder summary
 
 - Total endpoints in this folder: `6`
-- Tested: `0`
-- Passed: `0`
+- Tested: `5`
+- Passed: `5`
 - Blocked / failed: `0`
 - ⚠️ Contains at least one endpoint with the known copy-pasted test-script bug (schema expects `produceName`/`softVersion`).
 - Last updated: `2026-09-06`
