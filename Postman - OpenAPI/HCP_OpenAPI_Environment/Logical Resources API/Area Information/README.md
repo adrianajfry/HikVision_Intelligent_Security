@@ -16,7 +16,7 @@ _(POST endpoints in this folder — 3 total)_
 | Path | `/artemis/api/resource/{{API_VER}}/regions/subRegions` |
 | AK used | `34489509` |
 | Signature used | `yoqukFFsz2FojoGKcWe9RP8uL+mNOrXrSTbEaVSo8fs=` |
-| Status | ✅ Passed (empty result — see note) |
+| Status | ✅ Passed (empty result) |
 
 **Request body:**
 ```json
