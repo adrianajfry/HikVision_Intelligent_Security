@@ -134,8 +134,8 @@ _(POST endpoints in this folder — 10 total)_
 |---|---|
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}/vehicle/vehicleList` |
-| AK used | `{{AK}}` *(not yet tested)* |
-| Signature used | *(pending — not yet tested)* |
+| AK used | `34489509` |
+| Signature used | `vHlST+Qwr6BFTlLwtJoVwSH8JdtZCZyonI003bQrc10=` |
 | Status | ⬜ Not yet tested |
 
 **Request body:**
@@ -149,11 +149,40 @@ _(POST endpoints in this folder — 10 total)_
 
 **Response:**
 ```json
-(not yet tested — run this request and paste the response here)
+{
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "total": 1,
+        "pageNo": 1,
+        "pageSize": 10,
+        "list": [
+            {
+                "vehicleId": "1",
+                "plateNo": "ABC1234",
+                "plateCategory": "",
+                "plateArea": 0,
+                "plateAreaName": "",
+                "personName": "Test Tan",
+                "personFamilyName": "Tan",
+                "personGivenName": "Test",
+                "phoneNo": "13000110011",
+                "vehicleColor": 3,
+                "vehicleGroupIndexCode": "1",
+                "effectiveDate": "2020-05-26T15:00:00+08:00",
+                "expiredDate": "2030-05-26T15:00:00+08:00",
+                "plateSize": -1,
+                "plateType": "",
+                "plateColor": "",
+                "combinePlateLicense": "ABC1234"
+            }
+        ]
+    }
+}
 ```
 
 **Notes / issues:**
-- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
+- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response.
 
 ---
 
