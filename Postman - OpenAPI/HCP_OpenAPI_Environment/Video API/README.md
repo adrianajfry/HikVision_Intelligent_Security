@@ -45,6 +45,46 @@ Short one-line description of what this folder's endpoints are for.
 
 ---
 
+## Endpoint: Get the streaming URL for live view
+| Field | Value |
+|---|---|
+| Method | `POST` |
+| Path | `/artemis/api/video/{{API_VER}}/cameras/previewURLs` |
+| AK used | `34489509` |
+| SK used | `I/SEplnn+Y61XdiN/8EO62D2wy3DJJI1D2qCL43CuR0=` |
+| Status | ✅ Passed |
+
+**Request body:**
+```json
+ {
+    "cameraIndexCode": "6",
+    "statisticsType": 0,
+    "beginTime": "2022-02-16T15:00:00+08:00",
+    "endTime": "2022-02-16T16:00:00+08:00"
+}
+```
+
+**Response:**
+```json
+{
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "maxValue": 0,
+        "minValue": 0,
+        "averageValue": 0,
+        "arrayLine": 0,
+        "arrayColum": 0,
+        "buffer": ""
+    }
+}
+```
+
+**Notes / issues:**
+- none for now.
+
+---
+
 ## Endpoint: Get Resource Group List
 | Field | Value |
 |---|---|
