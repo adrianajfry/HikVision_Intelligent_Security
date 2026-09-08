@@ -37,7 +37,7 @@ Testing "Add a visitor" revealed something important about how this API behaves:
 |---|---|
 | Method | `POST` |
 | Path | `/artemis/api/visitor/{{API_VER}}/appointment/appointmentlist` *(distinct request from "Add a visitor," different endpoint despite similar name)* |
-| AK used | *(not individually tested — see note)* |
+| AK used | `34489509` |
 | Status | 🚫 Blocked (inferred, low confidence) |
 
 **Notes / issues:**
