@@ -92,7 +92,7 @@ _(POST endpoints in this folder — 3 total)_
 | Path | `/artemis/api/resource/{{API_VER}}/acsDevice/indexCode/acsDeviceInfo` |
 | AK used | `34489509` |
 | Signature used | `CXZVbLNV75NSbsVfgxgKn7VjinBtXU/KAUPIwyWwS4E=` |
-| Status | ✅ Passed |
+| Status | 🚫 Blocked — resource not found |
 
 **Request body:**
 ```json
@@ -111,7 +111,7 @@ _(POST endpoints in this folder — 3 total)_
 ```
 
 **Notes / issues:**
-- **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response.
+- Validly formatted ID, simply doesn't exist — consistent with the confirmed empty Access Control Device account state (see "Get access control device list").
 
 ---
 
@@ -120,6 +120,6 @@ _(POST endpoints in this folder — 3 total)_
 - Total endpoints in this folder: `3`
 - Tested: `2`
 - Passed: `2`
-- Blocked / failed: `0`
+- Blocked / failed: `1`
 - ⚠️ Contains at least one endpoint with the known copy-pasted test-script bug (schema expects `produceName`/`softVersion`).
 - Last updated: `2026-09-06`
