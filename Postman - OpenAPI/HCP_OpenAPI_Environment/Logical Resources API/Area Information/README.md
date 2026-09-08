@@ -16,13 +16,13 @@ _(POST endpoints in this folder — 3 total)_
 | Path | `/artemis/api/resource/{{API_VER}}/regions/subRegions` |
 | AK used | `34489509` |
 | Signature used | `yoqukFFsz2FojoGKcWe9RP8uL+mNOrXrSTbEaVSo8fs=` |
-| Status | ✅ Passed (empty result) |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
 {
     "siteIndexCode": "0",
-    "parentIndexCode": "1"
+    "parentIndexCode": "-1"
 }
 ```
 
@@ -31,12 +31,34 @@ _(POST endpoints in this folder — 3 total)_
 {
     "code": "0",
     "msg": "Success",
-    "data": ""
+    "data": {
+        "list": [
+            {
+                "indexCode": "3",
+                "parentIndexCode": "-1",
+                "siteIndexCode": "0",
+                "name": "Kg.Mukut"
+            },
+            {
+                "indexCode": "4",
+                "parentIndexCode": "-1",
+                "siteIndexCode": "0",
+                "name": "TM 80"
+            },
+            {
+                "indexCode": "2",
+                "parentIndexCode": "-1",
+                "siteIndexCode": "0",
+                "name": "TMDA"
+            }
+        ]
+    }
 }
 ```
 
 **Notes / issues:**
 - `data: ""` (empty) — `parentIndexCode: "1"` doesn't match either real area (`"3"` or `"4"`, both with `parentIndexCode: "-1"`, meaning they're top-level areas with no parent). This ran successfully but queried a non-existent parent ID. Worth re-testing with `parentIndexCode: "-1"` to see if that returns the two real areas as children of the root.
+- First attempt used the collection's placeholder `parentIndexCode: "1"`, which doesn't match any real area's parent (all 3 real areas have `parentIndexCode: "-1"`, meaning they're top-level). Corrected to `"-1"` and got a full result — all 3 areas at once, confirming the `total: 3` seen in "Search for areas" (which only showed 2 due to `pageSize: 2`).
 - **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
 
 ---
@@ -126,7 +148,7 @@ _(POST endpoints in this folder — 3 total)_
 ```
 
 **Notes / issues:**
-- First attempt used the collection's placeholder `regionIndexCode: "root000000"` and `siteIndexCode: "site000000"` — neither is a real ID on this account, so it correctly failed with `code: 2, "Incorrect request parameter"`.
+- First attempt used the collection's placeholder IDs (`regionIndexCode: "root000000"`, `siteIndexCode: "site000000"`) and correctly failed with `code: 2`. Corrected to the real `regionIndexCode: "3"` (Kg.Mukut) and succeeded — full read chain verified: Search for areas → real ID → direct lookup by ID confirms the same record.
 - Corrected body above uses the real area ID (`"3"`, Kg.Mukut) found via "Search for areas." Awaiting retest.
 - **Known collection bug**: this request's Tests script validates against a schema expecting `produceName`/`softVersion` — that schema belongs to the "Get version of platform" endpoint, not this one. Test Results will likely show 0/1 even on a correct, successful response. Flagged for senior; not something to fix on your end.
 
@@ -138,4 +160,4 @@ _(POST endpoints in this folder — 3 total)_
 - Tested: `3` 
 - Passed: `3`
 - Blocked / failed: `0`
-- Last updated: `2026-09-07`
+- Last updated: `2026-09-08`
