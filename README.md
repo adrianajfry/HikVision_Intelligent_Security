@@ -8,7 +8,6 @@ Update this file as each folder's README is completed — this is the "at a glan
 | Environment name | AK | Notes |
 |---|---|---|
 | `HCP_OpenAPI` | `34489509` | 1st set shared by senior |
-| `HCP_OpenAPI_2` | `16436892` | 2nd set shared by senior — scope/purpose TBD |
 
 **Host:** `175.140.166.217` (both credential sets)
 
