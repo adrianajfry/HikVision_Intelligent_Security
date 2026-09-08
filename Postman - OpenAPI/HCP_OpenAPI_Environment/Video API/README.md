@@ -45,7 +45,7 @@ Short one-line description of what this folder's endpoints are for.
 
 ---
 
-## Endpoint: Get the streaming URL for live view
+## Endpoint: Statistics heat Map By Time
 | Field | Value |
 |---|---|
 | Method | `POST` |
@@ -56,11 +56,11 @@ Short one-line description of what this folder's endpoints are for.
 
 **Request body:**
 ```json
- {
-    "cameraIndexCode": "6",
+  {
+    "cameraIndexCode": "13",
     "statisticsType": 0,
-    "beginTime": "2022-02-16T15:00:00+08:00",
-    "endTime": "2022-02-16T16:00:00+08:00"
+    "beginTime": "2026-09-03T00:00:00+08:00",
+    "endTime": "2026-09-04T00:00:00+08:00"
 }
 ```
 
@@ -76,6 +76,161 @@ Short one-line description of what this folder's endpoints are for.
         "arrayLine": 0,
         "arrayColum": 0,
         "buffer": ""
+    }
+}
+```
+
+**Notes / issues:**
+- none for now.
+
+---
+
+## Endpoint: Statics total number by time
+| Field | Value |
+|---|---|
+| Method | `POST` |
+| Path | `/artemis/api/aiapplication/{{API_VER}}/people/advance/resourceGroupList` |
+| AK used | `34489509` |
+| SK used | `LZ1eADpS4CTiaLOqwH014BofmOoqq8H4PciANsFLhH4=` |
+| Status | ✅ Passed |
+
+**Request body:**
+```json
+{
+    "pageNo": 1,
+    "pageSize": 2,
+    "cameraIndexCodes": "95, 6, 12, 89, 55, 13",
+    "statisticsType": 0,
+    "startTime": "2026-09-08T00:00:00+08:00",
+    "endTime": "2026-09-09T00:00:00+08:00"
+}
+```
+
+**Response:**
+```json
+{
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "completeness": 1,
+        "pageNo": 0,
+        "pageSize": 0,
+        "list": [
+            {
+                "time": "2026-09-08T05:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 2,
+                "enterNum": 0
+            },
+            {
+                "time": "2026-09-08T06:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 4,
+                "enterNum": 3
+            },
+            {
+                "time": "2026-09-08T07:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 5,
+                "enterNum": 5
+            },
+            {
+                "time": "2026-09-08T08:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 6,
+                "enterNum": 9
+            },
+            {
+                "time": "2026-09-08T09:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 17,
+                "enterNum": 16
+            },
+            {
+                "time": "2026-09-08T10:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 27,
+                "enterNum": 29
+            },
+            {
+                "time": "2026-09-08T11:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 34,
+                "enterNum": 59
+            },
+            {
+                "time": "2026-09-08T12:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 38,
+                "enterNum": 68
+            },
+            {
+                "time": "2026-09-08T13:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 42,
+                "enterNum": 73
+            },
+            {
+                "time": "2026-09-08T14:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 49,
+                "enterNum": 99
+            },
+            {
+                "time": "2026-09-08T15:00:00+08:00",
+                "cameraIndexCode": "12",
+                "exitNum": 53,
+                "enterNum": 108
+            },
+            {
+                "time": "2026-09-08T08:00:00+08:00",
+                "cameraIndexCode": "95",
+                "exitNum": 1,
+                "enterNum": 1
+            },
+            {
+                "time": "2026-09-08T10:00:00+08:00",
+                "cameraIndexCode": "95",
+                "exitNum": 1,
+                "enterNum": 2
+            },
+            {
+                "time": "2026-09-08T11:00:00+08:00",
+                "cameraIndexCode": "95",
+                "exitNum": 3,
+                "enterNum": 1
+            },
+            {
+                "time": "2026-09-08T12:00:00+08:00",
+                "cameraIndexCode": "95",
+                "exitNum": 2,
+                "enterNum": 2
+            },
+            {
+                "time": "2026-09-08T13:00:00+08:00",
+                "cameraIndexCode": "95",
+                "exitNum": 2,
+                "enterNum": 1
+            },
+            {
+                "time": "2026-09-08T14:00:00+08:00",
+                "cameraIndexCode": "95",
+                "exitNum": 1,
+                "enterNum": 1
+            },
+            {
+                "time": "2026-09-08T15:00:00+08:00",
+                "cameraIndexCode": "95",
+                "exitNum": 3,
+                "enterNum": 0
+            },
+            {
+                "time": "2026-09-08T16:00:00+08:00",
+                "cameraIndexCode": "95",
+                "exitNum": 1,
+                "enterNum": 1
+            }
+        ]
     }
 }
 ```
