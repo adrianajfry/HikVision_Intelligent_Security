@@ -223,8 +223,8 @@ _(POST endpoints in this folder — 10 total)_
 | Method | `POST` |
 | Path | `/artemis/api/resource/{{API_VER}}/vehicle/single/add` |
 | AK used | `34489509` |
-| Signature used | `Raw7tIV+1TTVZDvp5GhOflY/nURPXHceF2/XQ96XQw0=` |
-| Status | ⚠️ Blocked |
+| Signature used | `JX6kgsjBKnpl3SMqYGXYyIQcKoEkkFGjPH1QNhMEn3Y=` |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
@@ -236,17 +236,33 @@ _(POST endpoints in this folder — 10 total)_
     "vehicleGroupIndexCode": "1",
     "personGivenName": "Test",
     "personFamilyName": "Tan",
-    "effectiveDate": "2020-05-26",
-    "expiryDate": "2030-05-26"
+    "effectiveDate": "2020-05-26T15:00:00+08:00",
+    "expiredDate": "2030-05-26T15:00:00+08:00"
 }
 ```
 
 **Response:**
 ```json
 {
-    "code": "2",
-    "msg": "Incorrect request parameter. [effectiveDate parameter error]",
-    "data": ""
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "vehicleId": "1",
+        "plateNo": "ABC1234",
+        "plateCategory": "",
+        "plateArea": 0,
+        "plateAreaName": "",
+        "personName": "Test Tan",
+        "phoneNo": "13000110011",
+        "vehicleColor": 3,
+        "vehicleGroupIndexCode": "1",
+        "effectiveDate": "2020-05-26T15:00:00+08:00",
+        "expiredDate": "2030-05-26T15:00:00+08:00",
+        "plateSize": -1,
+        "plateType": "",
+        "plateColor": "",
+        "combinePlateLicense": "ABC1234"
+    }
 }
 ```
 
