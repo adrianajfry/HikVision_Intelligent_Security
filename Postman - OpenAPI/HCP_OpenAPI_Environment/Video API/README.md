@@ -8,6 +8,100 @@ Short one-line description of what this folder's endpoints are for.
 
 ---
 
+## Endpoint: Get Resource Group List
+| Field | Value |
+|---|---|
+| Method | `POST` |
+| Path | `/artemis/api/aiapplication/{{API_VER}}/people/resourceGroupRealTimeCount` |
+| AK used | `34489509` |
+| SK used | `MkLJfmWtaMdE8k3mh9qsvsvXvY2v+A7sg5rUXSdML1Q==` |
+| Status | ✅ Passed |
+
+**Request body:**
+```json
+{
+    "pageNo": 1,
+    "pageSize": 10
+}
+```
+
+**Response:**
+```json
+{
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "total": 1,
+        "pageNo": 1,
+        "pageSize": 10,
+        "list": [
+            {
+                "resourceGroupIndexCode": "1",
+                "resourceGroupName": "People Counting",
+                "siteIndexCode": "0",
+                "peopleCountingParam": {
+                    "relatedResourceInfoList": [
+                        {
+                            "resourceType": 1,
+                            "resourceIndexCode": "95",
+                            "resourceName": "Bullet Camera",
+                            "entryExitConfig": 1
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
+```
+
+**Notes / issues:**
+- none for now.
+
+---
+
+## Endpoint: Resource Group Real Time Count
+
+| Field | Value |
+|---|---|
+| Method | `POST` |
+| Path | `/artemis/api/aiapplication/{{API_VER}}/people/resourceGroupRealTimeCount` |
+| AK used | `34489509` |
+| SK used | `odnUarSlGk0WsFXac578WnSbuMzhmvT5k9VdoxAvCj4=` |
+| Status | ✅ Passed |
+
+**Request body:**
+```json
+{
+    "resourceGroupIndexCodes": "1"
+}
+```
+
+**Response:**
+```json
+{
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "list": [
+            {
+                "timebeginTime": "2026-09-08T00:00:00+08:00",
+                "resourceGroupIndexCode": "1",
+                "resourceGroupName": "People Counting",
+                "exitNum": 10,
+                "enterNum": 10,
+                "limitNum": 0
+            }
+        ]
+    }
+}
+```
+
+**Notes / issues:**
+- none for now.
+
+---
+
 ## Endpoint: Resource Group Real Time Count
 
 | Field | Value |
