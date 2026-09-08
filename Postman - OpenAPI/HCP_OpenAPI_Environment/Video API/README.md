@@ -334,7 +334,40 @@ Short one-line description of what this folder's endpoints are for.
 
 ---
 
-## Endpoint: Resource Group Real Time Count
+## Endpoint: Search for presets
+
+| Field | Value |
+|---|---|
+| Method | `POST` |
+| Path | `/artemis/api/video/{{API_VER}}/presets/searches` |
+| AK used | `34489509` |
+| SK used | `OIDlNprGz5R+bnoRtZQF0U4d+KwEd4QgIy2nFwWFtqA=` |
+| Status | ✅ Passed |
+
+**Request body:**
+```json
+{
+    "cameraIndexCode": "89"
+}
+```
+
+**Response:**
+```json
+{
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "total": 0
+    }
+}
+```
+
+**Notes / issues:**
+- none for now.
+
+---
+
+## Endpoint: [Example]
 
 | Field | Value |
 |---|---|
