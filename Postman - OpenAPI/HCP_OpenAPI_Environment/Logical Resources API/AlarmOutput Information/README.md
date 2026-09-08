@@ -186,4 +186,4 @@ _(POST endpoints in this folder — 4 total)_
 - Blocked / failed: `0`
 - 🔧 Contains a confirmed URL bug (duplicated path segment), fixed in Postman app only — not yet re-saved to the exported collection file.
 - ⚠️ Contains one control/action endpoint — tested safely with before/after verification and reverted to original state.
-- Last updated: `2026-09-07`
+- Last updated: `2026-09-08`
