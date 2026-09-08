@@ -8,41 +8,45 @@ Short one-line description of what this folder's endpoints are for.
 
 ---
 
-## Endpoint: [Endpoint Name, e.g. "Get version of platform"]
+## Endpoint: Resource Group Real Time Count
 
 | Field | Value |
 |---|---|
 | Method | `POST` |
-| Path | `/artemis/api/common/{{API_VER}}/version` |
+| Path | `/artemis/api/aiapplication/{{API_VER}}/people/resourceGroupRealTimeCount` |
 | AK used | `34489509` |
+| SK used | `odnUarSlGk0WsFXac578WnSbuMzhmvT5k9VdoxAvCj4=` |
 | Status | ✅ Passed / ❌ Failed / ⚠️ Blocked (no permission) |
 
 **Request body:**
 ```json
 {
-
+    "resourceGroupIndexCodes": "1"
 }
 ```
-
-**Signature check:**
-- Computed (expected): `paste value here`
-- Actual (from Postman Console): `paste value here`
-- Match? `Yes / No`
 
 **Response:**
 ```json
 {
-  "code": "0",
-  "msg": "Success",
-  "data": {
-
-  }
+    "code": "0",
+    "msg": "Success",
+    "data": {
+        "list": [
+            {
+                "timebeginTime": "2026-09-08T00:00:00+08:00",
+                "resourceGroupIndexCode": "1",
+                "resourceGroupName": "People Counting",
+                "exitNum": 10,
+                "enterNum": 10,
+                "limitNum": 0
+            }
+        ]
+    }
 }
 ```
 
 **Notes / issues:**
-- e.g. "Returned code 102 (no permission) when using AK #16436892 — flagged to senior on [date]."
-- e.g. "Had to strip trailing slash from HOSTINFO or request timed out."
+- none for now.
 
 ---
 
