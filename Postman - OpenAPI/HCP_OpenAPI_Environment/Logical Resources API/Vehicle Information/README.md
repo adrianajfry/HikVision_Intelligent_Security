@@ -136,7 +136,7 @@ _(POST endpoints in this folder — 10 total)_
 | Path | `/artemis/api/resource/{{API_VER}}/vehicle/vehicleList` |
 | AK used | `34489509` |
 | Signature used | `vHlST+Qwr6BFTlLwtJoVwSH8JdtZCZyonI003bQrc10=` |
-| Status | ⬜ Not yet tested |
+| Status | ✅ Passed |
 
 **Request body:**
 ```json
