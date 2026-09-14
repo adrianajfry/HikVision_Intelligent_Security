@@ -1,44 +1,49 @@
-# HCP OpenAPI — Calculate X-CA-Signature Testing Log
+# People Counting & Event Subscription — HCP OpenAPI Documentation
 
-Master tracker across all folders in the HCP OpenAPI Postman collection.
-Update this file as each folder's README is completed — this is the "at a glance" summary; details live in each folder's own README.
+This is a **focused subset** of the full HCP OpenAPI collection, scoped only to the APIs actually needed for the People Counting / Alarm Subscription project (per the finalized tracking sheet). It replaces the broader 28-folder documentation effort for this purpose — only 6 endpoints are needed in total: 4 target APIs and 2 shared prerequisites.
 
-**Credentials in use:**
-
-| Environment name | AK | Notes |
-|---|---|---|
-| `HCP_OpenAPI` | `34489509` | 1st set shared by senior |
-
-**Host:** `175.140.166.217` (both credential sets)
+**Environment used:** `HCP_OpenAPI` (AK `34489509`)
+**Host:** `175.140.166.217`
+**API version:** `v1`
 
 ---
 
-## Progress by folder
+## Dependency chain (verified, zero-guesswork roots)
 
-| Folder | Endpoints tested / total | Status | AK used | Last updated |
-|---|---|---|---|---|
-| Common API | 1/1 | ✅ Passed | 34489509 | 2026-09-06 |
-| Physical Resource API → Mobile Device Information | 0/? | ⬜ Not started | — | — |
-| Physical Resource API → Video Management Server Info | 0/? | ⬜ Not started | — | — |
-| Physical Resource API → Stream Server Info | 0/? | ⬜ Not started | — | — |
-| Physical Resource API → Intelligent Server Info | 0/? | ⬜ Not started | — | — |
-| Physical Resource API → Storage Server Info | 0/? | ⬜ Not started | — | — |
-| Physical Resource API → Access Control Device Information | 0/? | ⬜ Not started | — | — |
-| Physical Resource API → Encode Device Information | 0/? | ⬜ Not started | — | — |
-| Logical Resources API | 0/? | ⬜ Not started | — | — |
-| *(add remaining folders as you find them)* | | | | |
+```
+Get Cameras Information In Page   (root — pageNo/pageSize + fixed "encodeDevice" constant only)
+  → real cameraIndexCode values: 95, 6, 12, 55, 89, 13
+    ├─→ Statistics Total Number By Time   (needs: cameraIndexCodes)
+    └─→ Statistics Heat Map By Time        (needs: cameraIndexCode)
 
-**Status legend:** ✅ Passed &nbsp;|&nbsp; ⚠️ Partial / blocked &nbsp;|&nbsp; ❌ Failed &nbsp;|&nbsp; ⬜ Not started
+Get Resource Group List   (root — pageNo/pageSize only)
+  → real resourceGroupIndexCode: "1" ("People Counting")
+    └─→ Get Resource Group Real Time Count   (needs: resourceGroupIndexCodes)
+
+Event Subscription By Event Types   (root — no API dependency)
+  → eventTypes / alarm category codes come from a static reference table
+    (Developer Guide Appendix A.3 "Event Types or Alarm Categories," p.797),
+    not from any endpoint. token and eventDest are caller-defined values.
+```
+
+## Files in this set
+
+| File | Role |
+|---|---|
+| `Get Cameras Information In Page.md` | Prerequisite for Statistics Total Number By Time & Statistics Heat Map By Time |
+| `Get Resource Group List.md` | Prerequisite for Get Resource Group Real Time Count |
+| `Get Resource Group Real Time Count.md` | Target API |
+| `Statistics Total Number By Time.md` | Target API |
+| `Statistics Heat Map By Time.md` | Target API |
+| `Event Subscription By Event Types.md` | Target API (no prerequisite needed) |
+
+## Cross-checked against official documentation
+
+All 6 endpoints, their parameters, and the two bug fixes below have been verified against *HikCentral Professional OpenAPI V3.1.0 Developer Guide* (V3.1.0, 2026-01-30 build):
+
+- `regionIndexCode` and `siteIndexCode` were removed from the "Get Cameras Information In Page" prerequisite call — neither is required; `siteIndexCode` defaults to the current site, and `regionIndexCode` isn't even a documented parameter for this endpoint.
+- `deviceType` is a fixed enum (`mobileDevice` / `encodeDevice` / `acsDevice`) from the guide, not an API-derived value.
 
 ---
 
-## Open questions for senior
-
-- [ ] Are the two AK/SK sets meant for different API scopes, or does the 2nd replace the 1st?
-- [ ] *(add more as they come up)*
-
----
-
-## Key findings / blockers
-
-- e.g. "AK #16436892 returns permission errors on Common API — likely scoped to a different API group."
+*Superseded scope note: the original 28-folder documentation project (Common API, Physical Resource API, Logical Resources API, etc.) remains valid and complete for its own purposes, but is not required for this People Counting / Event Subscription track. See the original `TESTING_LOG.md` for that broader effort.*
