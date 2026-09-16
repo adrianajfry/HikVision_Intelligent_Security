@@ -1,111 +1,81 @@
-# People Counting Integration Research — ISAPI & HCP OpenAPI
+# Retail KPI Analytics — HikCentral Professional (HCP) OpenAPI & ISAPI Integration
 
-Research notes on Hikvision's People Counting capabilities across two separate API layers, done in support of a retail KPI reporting project. This documents how the two APIs relate, what was tested, and what's confirmed vs. still open.
+## 1. Project Overview
 
-## 1. The Two Layers
+This project builds retail analytics (footfall, occupancy, dwell time, queueing, crowd density, and related KPIs) on top of Hikvision's video analytics ecosystem — cameras and NVRs running people-counting and other VCA (video content analysis) features, managed centrally through **HikCentral Professional (HCP)**.
 
-Hikvision exposes people-counting data through two independent APIs. They are **not chained** — an app doesn't call one to reach the other. They're two separate doors into the same underlying camera data, each with its own auth, base URL, and use case.
+The original requirements for this project were defined by **Mr. Izzat**, scoped entirely around **HCP OpenAPI**. As the team worked through implementation, a related device-level API — **ISAPI (Intelligent Security API)** — came up as a way to potentially close gaps that HCP OpenAPI doesn't cover.
 
-| | ISAPI | HCP OpenAPI (Artemis) |
+This document exists so anyone joining the project can understand both APIs, how they relate, what's actually usable today, and what's still blocked or out of scope.
+
+## 2. Two APIs, Two Layers
+
+| | **ISAPI** | **HCP OpenAPI (Artemis)** |
 |---|---|---|
-| Level | Device (camera/NVR) | Platform (HikCentral Professional server) |
-| Talks to | Camera's own IP directly | HCP server's public-facing address |
-| Auth | HTTP Digest (device admin/password) | AppKey/AppSecret, HMAC-SHA256 signed |
-| Payload | XML | JSON |
-| Used for | Configuring a camera (enable counting, set thresholds) | Reading aggregated stats across all registered cameras |
+| Layer | Device-level — runs on each camera/NVR's firmware | Platform-level — runs on the HikCentral Professional server |
+| Scope | One device at a time | Aggregates data across all registered devices |
+| Auth | HTTP Digest Auth (camera's own admin login) | AK/SK, HMAC-SHA256 signed requests |
+| Reachability | Private LAN only (e.g. `192.168.x.x`), unless VPN'd or port-forwarded | Reachable wherever the HCP server is exposed (public IP in this project) |
+| Typical use | Direct config (enable counting, set thresholds) + raw single-device data | Cross-device reporting, statistics, and event/alarm subscriptions |
+| Status in this project | **Not in original scope** — being evaluated for specific gaps | **Confirmed working** — credentials tested, live calls succeeding |
 
-```
-Camera (runs ISAPI internally)
-        │
-        ▼  (HikCentral onboarding — not something the app codes)
-HikCentral Professional platform
-        │
-        ▼
-Your app ──── HCP OpenAPI ────▶ read aggregated stats
-        │
-        └──── ISAPI (direct to camera IP) ────▶ configure counting settings
-```
+**Key takeaway:** these are not chained together (ISAPI does not "feed into" OpenAPI). They're two independent, parallel ways to reach the same underlying devices. In this project, HCP OpenAPI is the primary integration path; ISAPI is only relevant for the small number of KPIs HCP doesn't expose.
 
-## 2. ISAPI — Core Pattern
+## 3. Current API Availability Status
 
-Every ISAPI feature follows the same request sequence (from the *Intelligent Security API (People Counting) Developer Guide*):
-
-1. `GET .../capabilities` — check the feature is supported
-2. `GET` current config — read existing settings (optional)
-3. `PUT` config — enable the feature / set parameters
-4. Data flows out via **events**, in one of two modes:
-   - **Arming mode** — app holds open a long-lived GET request; device streams events down it (pull)
-   - **Listening mode** — app runs a small HTTP server; device pushes events to it like a webhook (push)
-
-Appendices in the guide (URIs, XML schemas, error codes) are reference material — consult as needed, not something to read end-to-end.
-
-## 3. HCP OpenAPI — What's Actually Used
-
-Confirmed via the *HikCentral Professional OpenAPI V3.1.0 Developer Guide*, Section 4.11 (Intelligent Analysis):
-
-```
-1. POST /artemis/api/aiapplication/v1/people/advance/resourceGroupList
-2. POST /artemis/api/aiapplication/v1/people/statisticsTotalNumByTime
-3. POST /artemis/api/aiapplication/v1/people/resourceGroupRealTimeCount
-4. POST /artemis/api/aiapplication/v1/people/statisticsHeatMapByTime
-5. POST /artemis/api/eventService/v1/eventSubscriptionByEventTypes  (alarm/event push)
-6. POST /artemis/api/resource/v1/cameras
-7. POST /artemis/api/resource/v1/encodeDevice/encodeDeviceList
-```
-
-This section is purely **read/report** — no endpoint here configures or enables counting on a device. Confirmed by full-text search of the guide: no ISAPI passthrough, transparent-transmission, or forwarding mechanism exists in HCP OpenAPI. Device configuration is only possible via ISAPI, direct to the device.
-
-## 4. ID Mapping (the one real bridge between the two APIs)
-
-ISAPI identifies a camera by **IP + channel ID**. HCP identifies it by its own internal **`cameraIndexCode`**. Neither API surfaces the other's identifier directly for a given camera, so a manual join is needed:
-
-- `POST /artemis/api/resource/v1/cameras` → returns `cameraIndexCode`, `encodeDevIndexCode`
-- `POST /artemis/api/resource/v1/encodeDevice/encodeDeviceList` → returns `encodeDevIndexCode`, `encodeDevIp`, `encodeDevPort`
-
-Join on `encodeDevIndexCode` to get a `cameraIndexCode ↔ deviceIp` lookup table. Note: for cameras behind an NVR, `encodeDevIp` is the **NVR's** IP, and the camera is a channel number on that NVR, not a separate IP.
-
-## 5. Network Notes
-
-- HCP OpenAPI's `HOSTINFO` is typically a **public IP** — the organization port-forwards specifically for OpenAPI access.
-- Camera IPs (`encodeDevIp`) are typically **private LAN addresses** (e.g. `192.168.x.x`) and are *not* reachable from outside that network. Reaching them for direct ISAPI calls requires one of: on-site network access, VPN into the site, a jump host inside the LAN, or (short-term only) explicit port forwarding to the camera.
-- ISAPI runs on the device's standard HTTP/HTTPS port (80/443) — not the SDK port (commonly 8000) that `encodeDeviceList` reports, which is used for HikCentral's private protocol, not ISAPI.
-
-## 6. Postman Setup Notes
-
-- **HCP OpenAPI** requests require a pre-request script that computes an `X-Ca-Signature` header via HMAC-SHA256 using the environment's `SK` value. Requests built without this script fail with `code: 68, "Signature authentication Failed"`.
-- **ISAPI** requests use Digest Auth (camera admin credentials) instead, need SSL certificate verification disabled (self-signed device certs), and use `Content-Type: application/xml` instead of JSON.
-- The vendor-exported HCP OpenAPI Postman collection has a known typo in one bundled request (`ncodeDevice` instead of `encodeDevice` in the URL path) — fix manually if reused.
-
-## 7. KPI → API Availability (Retail Project Mapping)
-
-From the project's KPI availability review (48 KPIs assessed):
+The team mapped ~48 retail KPIs against what's actually retrievable. Summary:
 
 | Status | Count | Meaning |
 |---|---|---|
-| Yes | 17 | Confirmed, callable today (HCP OpenAPI and/or ISAPI) |
-| Yes (Flagged) | 12 | Documented but needs a live validation demo from Hikvision (e.g. Heatmap/Dwell Time return an explicitly empty buffer in some cases) |
-| Partial | 11 | Only available via camera/NVR-direct ISAPI (not exposed by HCP OpenAPI), or config-dependent |
-| No | 8 | No known endpoint at any layer (Visitor Re-ID, Journey, Repeat Visitors — all downstream of a missing Re-ID capability) |
+| **Yes** | 17 | Confirmed, documented, callable via HCP OpenAPI today |
+| **Yes (Flagged)** | 12 | Documented and callable, but needs Hikvision to validate real-world reliability (e.g. Heatmap/Dwell Time can return an empty payload) |
+| **Partial** | 11 | No continuous query exists on HCP OpenAPI — only available (if at all) via device-direct ISAPI, or depends on site configuration |
+| **No** | 8 | No known API path at any layer (mainly Re-ID / cross-camera visitor journey features) |
 
-**KPIs that would require ISAPI work specifically** (HCP OpenAPI has no continuous-value endpoint for these — only threshold alarms):
+**KPIs that specifically require ISAPI** (not available via HCP OpenAPI at all):
 - Queue Length (continuous count)
 - Average Wait Time (continuous)
-- Crowd Density (continuous index)
-- Passersby (config-dependent — needs confirmation on camera/resource setup)
+- Crowd Density (continuous index/score)
+- Passersby (config-dependent — may just need the outdoor line registered as its own camera resource)
 
-## 8. Project Scope Note
+Everything else in the "Yes" and "Yes (Flagged)" categories is fully served by HCP OpenAPI and needs no ISAPI work.
 
-Per the project's original requirements (set by Mr. Izzat), the intended integration is **HCP OpenAPI only** — ISAPI was never part of the defined scope. The four KPIs above are technically achievable via ISAPI, but pursuing them would extend scope beyond the original plan. This is a decision point for the project owner, not an engineering gap to silently fill.
+## 4. Project Scope Note
 
-## 9. Open Items
+ISAPI was **not part of the original requirements**. Mr. Izzat's scope and the KPI mapping were built entirely around HCP OpenAPI, and HCP OpenAPI is confirmed to cover everything originally requested. The four KPIs above are an open question for the team lead: whether to formally expand scope to include ISAPI, or leave them out of this project's deliverables.
 
-- [ ] Confirm with Hikvision: dedicated ISAPI developer guides for Queue Management and Crowd Density/Regional People Counting modules (separate from the People Counting guide already reviewed)
-- [ ] Get a live validation demo from Hikvision for the "Yes (Flagged)" Heatmap/Dwell Time endpoints
-- [ ] Scope decision from Mr. Izzat on the 4 ISAPI-only KPIs
-- [ ] Confirm zone-to-resource-group mapping for `resourceGroupRealTimeCount` (unlocks several "Partial" zone-based KPIs without touching ISAPI)
+## 5. ISAPI Status: Blocked (Not Yet Tested)
 
-## References
+The team has **not been able to test any ISAPI endpoint** — this is a single, well-understood blocker, not a series of individual API failures:
 
-- *Intelligent Security API (People Counting) Developer Guide* — Hikvision
-- *HikCentral Professional OpenAPI V3.1.0 Developer Guide* (20260130) — Hikvision
-- Retail KPI API Availability Map (internal project spreadsheet)
+1. **Network access** — camera/NVR IPs (e.g. `192.168.7.117`) sit on a private LAN, unreachable from outside without being physically on-site or connected via VPN.
+2. **Credentials** — camera-level admin username/password (Digest Auth) has not been provided. This is separate from the HCP OpenAPI AK/SK credentials already in use.
+
+Both are access requests for whoever manages the physical devices/network — not a coding or documentation problem.
+
+## 6. What's Confirmed Working
+
+- HCP OpenAPI credentials (AK/SK) are live and tested via Postman.
+- Successfully called `encodeDeviceList` and retrieved the real registered device list (e.g. Bullet Camera, TMDA-NVR, TM 80-Cam 3, Kg.Mukut NVR, Fisheye) with their IPs, ports, and protocol types.
+- Successfully tested `cameras`, and people-counting statistics endpoints (`statisticsTotalNumByTime`, `resourceGroupRealTimeCount`, etc.) referenced in the KPI mapping.
+
+## 7. Key People
+
+- **Mr. Izzat** — defined original project requirements/scope
+- **Puan Hana** — team lead, reviewing progress and testing status
+- **Edwin & Shirlin (Hikvision)** — technical contacts consulted on API gaps (e.g. Heatmap/Dwell Time reliability, UI-vs-OpenAPI discrepancies)
+
+## 8. Open Questions / Next Steps
+
+- [ ] Confirm with Puan Hana / Mr. Izzat: is ISAPI in scope for the 4 flagged KPIs, or are they accepted as unavailable?
+- [ ] If in scope: request VPN or on-site network access to the camera LAN
+- [ ] If in scope: request camera/NVR admin credentials for ISAPI Digest Auth
+- [ ] Confirm whether Queue Management and Crowd Density are separate ISAPI feature modules (with their own developer guides) distinct from the People Counting guide already reviewed
+- [ ] Ask Hikvision to validate the "Yes (Flagged)" endpoints live (Heatmap/Dwell Time empty-buffer issue)
+- [ ] Confirm entrance/zone-to-camera-resource mapping on site (affects Passersby, Visitors by Zone, Capture Rate)
+
+## 9. Reference Documents
+
+- *Intelligent Security API (People Counting) Developer Guide* — ISAPI conventions, capability-first config pattern, arming/listening event modes
+- *HikCentral Professional OpenAPI V3.1.0 Developer Guide* (851 pages) — full HCP OpenAPI endpoint reference
+- Internal KPI-to-API availability mapping spreadsheet (48 KPIs, Yes/Flagged/Partial/No classification)
