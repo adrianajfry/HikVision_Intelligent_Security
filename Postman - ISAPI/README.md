@@ -1,69 +1,43 @@
-# People Counting & Event Subscription — HCP OpenAPI Documentation
+# ISAPI Documentation — HikCentral Cameras
 
-This is a **focused subset** of the full HCP OpenAPI collection, scoped only to the APIs actually needed for the People Counting / Alarm Subscription project (per the finalized tracking sheet). It replaces the broader 28-folder documentation effort for this purpose — only 6 endpoints are needed in total: 4 target APIs and 2 shared prerequisites.
-
-**Environment used:** `HCP_OpenAPI` (AK `34489509`)
-**Host:** `175.140.166.217`
-**API version:** `v1`
+Documentation for direct camera-level API calls (ISAPI), as a companion to the existing HCP OpenAPI documentation. ISAPI is a **fundamentally different API layer** from everything documented so far — this file explains the differences before diving into individual device docs.
 
 ---
 
-## Dependency chain (verified, zero-guesswork roots)
+## How ISAPI differs from HCP OpenAPI
 
-```
-Get Cameras Information In Page   (root — pageNo/pageSize + fixed "encodeDevice" constant only)
-  → real cameraIndexCode values: 95, 6, 12, 55, 89, 13
-    ├─→ Statistics Total Number By Time   (needs: cameraIndexCodes)
-    └─→ Statistics Heat Map By Time        (needs: cameraIndexCode)
+| | HCP OpenAPI (Artemis) | ISAPI |
+|---|---|---|
+| **Talks to** | HikCentral server (a proxy in front of all devices) | The camera/device directly |
+| **Auth method** | AK/SK + HMAC-SHA256 signature (`X-Ca-Key`/`X-Ca-Signature` headers) | HTTP Digest Auth — device username + password |
+| **Response format** | JSON | **XML** |
+| **Addressing** | One shared host (`{{HOSTINFO}}`) for every call | Each device has its **own port** on the shared public IP — no single "host" covers everything |
+| **Credentials** | AK/SK pairs shared for the whole HCP account | Per-device login (found so far: `admin` / `Hik24680!`) |
 
-Get Resource Group List   (root — pageNo/pageSize only)
-  → real resourceGroupIndexCode: "1" ("People Counting")
-    └─→ Get Resource Group Real Time Count   (needs: resourceGroupIndexCodes)
-
-Event Subscription By Event Types   (root — no API dependency)
-  → eventTypes / alarm category codes come from a static reference table
-    (Developer Guide Appendix A.3 "Event Types or Alarm Categories," p.797),
-    not from any endpoint. token and eventDest are caller-defined values.
-```
-
-## Files in this set
-
-| File | Role |
-|---|---|
-| `Get Cameras Information In Page.md` | Prerequisite for Statistics Total Number By Time & Statistics Heat Map By Time |
-| `Get Resource Group List.md` | Prerequisite for Get Resource Group Real Time Count |
-| `Get Resource Group Real Time Count.md` | Target API |
-| `Statistics Total Number By Time.md` | Target API |
-| `Statistics Heat Map By Time.md` | Target API |
-| `Event Subscription By Event Types.md` | Target API (no prerequisite needed) |
+**Practical implication:** every ISAPI request needs its own port, and that port has to be confirmed to actually belong to the camera you think it does — port-to-camera mapping is **manually configured, not documented or guaranteed consistent** (confirmed by Aiman, the engineer managing the network side). Don't assume a port number based on naming or ordering; always verify via the response itself (see "How to identify a camera" below).
 
 ---
 
-## HCP OpenAPI — API Tracking Sheet
-This tracks the People Counting / Event Subscription APIs needed for this project — each target endpoint alongside its request parameters, expected output (per the official guide), actual tested output, and its prerequisite/reference endpoint (the API that supplies its real input values).
- 
-**Google Sheet:** [HCP OpenAPI + Output](https://docs.google.com/spreadsheets/d/1e_chPWYNx3uhu9qwAX9bTlfblRRVqqJqOdahRCo-jko/edit?usp=sharing)
- 
-## What's in the sheet
- 
-| Column | Description |
-|---|---|
-| HCP OpenAPI Endpoint | The target API being used, with its guide page reference |
-| Request Parameters | The real request body used for testing |
-| Output HCP (PDF) | The example response shown in the official developer guide |
-| Output HCP (Tested) | The actual response received when tested live |
-| HCP OpenAPI Prerequisite/Reference Endpoint | The API (if any) that supplies this endpoint's real input values |
-| Prerequisite/Reference Request Parameters | The request body used for the prerequisite call |
-| Output HCP (API Reference) | The actual response from the prerequisite call |
-| Remarks | Notes on dependency chain, known issues, or findings |
+## How to identify which camera a port belongs to
 
-## Cross-checked against official documentation
-
-All 6 endpoints, their parameters, and the two bug fixes below have been verified against *HikCentral Professional OpenAPI V3.1.0 Developer Guide* (V3.1.0, 2026-01-30 build):
-
-- `regionIndexCode` and `siteIndexCode` were removed from the "Get Cameras Information In Page" prerequisite call — neither is required; `siteIndexCode` defaults to the current site, and `regionIndexCode` isn't even a documented parameter for this endpoint.
-- `deviceType` is a fixed enum (`mobileDevice` / `encodeDevice` / `acsDevice`) from the guide, not an API-derived value.
+Call `/ISAPI/System/deviceInfo` on the port in question, then match the returned `<serialNumber>` against the `encodeDevCode` field from HCP OpenAPI's **"Get encoding device list"** response (already documented in the main OpenAPI docs). The serial number is a unique fingerprint — an exact string match confirms the identity with certainty, no guessing required.
 
 ---
 
-*Superseded scope note: the original 28-folder documentation project (Common API, Physical Resource API, Logical Resources API, etc.) remains valid and complete for its own purposes, but is not required for this People Counting / Event Subscription track. See the original `TESTING_LOG.md` for that broader effort.*
+## Known ports and protocols so far
+
+| Port | Protocol | Result | Notes |
+|---|---|---|---|
+| `1056` | (assumed HTTP) | ❌ Socket hang up | Turned out to be an **RTSP** port (video streaming), not HTTP/ISAPI — wrong protocol entirely, not a credentials issue |
+| `1056` | HTTPS | ❌ TLS handshake failed | HTTPS is **not enabled** on this device/network per Aiman — don't retry HTTPS until confirmed otherwise |
+| `8089` | HTTP | ✅ **Working** | Confirmed = **Fisheye camera** (see device file) |
+| `1026` | HTTP | ❌ Request timed out (multiple attempts) | Unresolved — forwarded to Aiman. Timeout (not hang-up/refusal) suggests either a NAT/port-forwarding issue, or the device behind it is genuinely offline. Possible link: `cameraIndexCode: "55"` ("TM 80-Cam 3") showed `status: 2` in OpenAPI data, unlike every other camera's `status: 1` — plausible this is the same offline device, unconfirmed. |
+
+---
+
+## Files in this folder
+
+- `device - Fisheye (port 8089).md` — first confirmed working device
+- *(add one file per confirmed camera as ports are resolved)*
+
+**Last updated:** 2026-09-15
